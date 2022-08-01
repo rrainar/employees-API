@@ -64,66 +64,76 @@ function deleteByIdTribes(ctx) {
 }
 
 function createEmployees(ctx) {
-  const text = ctx.request.body.text;
+  const id = ctx.request.body.id;
+  const name = ctx.request.body.name;
+  const title = ctx.request.body.title;
+  const tribe_id = ctx.request.body.tribe_id;
+  const office_id = ctx.request.body.office_id;
 
-  if (!text || text === "") {
+  if (!name || name === "") {
     ctx.status = 400;
     return;
   }
 
-  employeesModel.employees.push({ text });
+  employeesModel.employees.push({ id, name, title, tribe_id, office_id });
   ctx.status = 201;
 }
 
-function createOffices(ctx) {
-  const text = ctx.request.body.text;
+// function createOffices(ctx) {
+//   const text = ctx.request.body.text;
 
-  if (!text || text === "") {
-    ctx.status = 400;
-    return;
-  }
+//   if (!text || text === "") {
+//     ctx.status = 400;
+//     return;
+//   }
 
-  employeesModel.offices.push({ text });
-  ctx.status = 201;
-}
+//   employeesModel.offices.push({ text });
+//   ctx.status = 201;
+// }
 
-function createTribes(ctx) {
-  const text = ctx.request.body.text;
+// function createTribes(ctx) {
+//   const text = ctx.request.body.text;
 
-  if (!text || text === "") {
-    ctx.status = 400;
-    return;
-  }
+//   if (!text || text === "") {
+//     ctx.status = 400;
+//     return;
+//   }
 
-  employeesModel.tribes.push({ text });
-  ctx.status = 201;
-}
+//   employeesModel.tribes.push({ text });
+//   ctx.status = 201;
+// }
 
 function searchEmployeeByName(ctx) {
-  const name = ctx.request.query.string;
-  const result = employeesModel.employees.name.filter((x) =>
-    x.name.toLowerCase().includes(name.toLowerCase())
+  const name = ctx.request.query.name;
+  const result = employeesModel.employees.filter((x) => x.name.toLowerCase().includes(name.toLowerCase())
   );
   ctx.body = result;
 }
 
 function searchOfficesByName(ctx) {
   const officeName = ctx.request.query.string;
-  const result = employeesModel.offices.name.filter((x) =>
-    x.name.toLowerCase().includes(officeName.toLowerCase())
+  const result = employeesModel.offices.filter((x) => x.name.toLowerCase().includes(officeName.toLowerCase())
   );
   ctx.body = result;
 }
 
 function searchTribesByName(ctx) {
   const tribeName = ctx.request.query.string;
-  const result = employeesModel.tribes.name.filter((x) =>
-    x.name.toLowerCase().includes(tribeName.toLowerCase())
+  const result = employeesModel.tribes.filter((x) => x.name.toLowerCase().includes(tribeName.toLowerCase())
   );
   ctx.body = result;
 }
 
+
+// function employeesGroupedByTribe(ctx) {
+//   const tribeName = ctx.request.query.string;
+//   const groupByTribe = 
+//   ctx.body = groupByTribe;
+// }
+
+
 module.exports = {
+  // employeesGroupedByTribe,
   searchEmployeeByName,
   searchOfficesByName,
   searchTribesByName,
@@ -137,6 +147,6 @@ module.exports = {
   deleteByIdOffices,
   deleteByIdTribes,
   createEmployees,
-  createOffices,
-  createTribes,
+  // createOffices,
+  // createTribes,
 };
