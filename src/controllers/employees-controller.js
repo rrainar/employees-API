@@ -91,29 +91,32 @@ function createEmployees(ctx) {
   ctx.status = 201;
 }
 
-// function createOffices(ctx) {
-//   const text = ctx.request.body.text;
+function createOffices(ctx) {
+  const office_id = ctx.request.body.office_id;
+  const name = ctx.request.body.name;
+  const address = ctx.request.body.address;
 
-//   if (!text || text === "") {
-//     ctx.status = 400;
-//     return;
-//   }
+  if (!name || name === "") {
+    ctx.status = 400;
+    return;
+  }
 
-//   employeesModel.offices.push({ text });
-//   ctx.status = 201;
-// }
+  employeesModel.offices.push({ office_id, name, address });
+  ctx.status = 201;
+}
 
-// function createTribes(ctx) {
-//   const text = ctx.request.body.text;
+function createTribes(ctx) {
+  const tribe_id = ctx.request.body.tribe_id;
+  const name = ctx.request.body.name;
 
-//   if (!text || text === "") {
-//     ctx.status = 400;
-//     return;
-//   }
+  if (!name || name === "") {
+    ctx.status = 400;
+    return;
+  }
 
-//   employeesModel.tribes.push({ text });
-//   ctx.status = 201;
-// }
+  employeesModel.tribes.push({ tribe_id, name });
+  ctx.status = 201;
+}
 
 function searchEmployeeByName(ctx) {
   const name = ctx.request.query.name;
@@ -201,6 +204,6 @@ module.exports = {
   deleteByIdOffices,
   deleteByIdTribes,
   createEmployees,
-  // createOffices,
-  // createTribes,
+  createOffices,
+  createTribes
 };
