@@ -75,7 +75,14 @@ function createEmployees(ctx) {
   const tribe_id = ctx.request.body.tribe_id;
   const office_id = ctx.request.body.office_id;
 
-  if (!name || name === "" || !title || title === "" || !tribe_id || tribe_id === "") {
+  if (
+    !name ||
+    name === "" ||
+    !title ||
+    title === "" ||
+    !tribe_id ||
+    tribe_id === ""
+  ) {
     ctx.status = 400;
     return;
   }
@@ -83,8 +90,6 @@ function createEmployees(ctx) {
   employeesModel.employees.push({ id, name, title, tribe_id, office_id });
   ctx.status = 201;
 }
-
-
 
 // function createOffices(ctx) {
 //   const text = ctx.request.body.text;
@@ -115,6 +120,12 @@ function searchEmployeeByName(ctx) {
   const result = employeesModel.employees.filter((x) =>
     x.name.toLowerCase().includes(name.toLowerCase())
   );
+
+  if (!name) {
+    ctx.status = 400;
+    return;
+  }
+
   ctx.body = result;
 }
 
@@ -122,17 +133,24 @@ function filterEmployees(ctx) {
   const title = ctx.request.query.title;
   const tribe = ctx.request.query.tribe;
 
-  const employees = employeesModel.employees.filter((x) => ( title ? x.title === title : true ) && ( tribe ? x.tribe === tribe : true )
+  if (!title && !tribe) {
+    ctx.status = 400;
+    return;
+  }
+
+  const employees = employeesModel.employees.filter(
+    (x) =>
+      (title ? x.title === title : true) && (tribe ? x.tribe === tribe : true)
   );
-  
-//     if (title && tribe) {
-//       return x.title === title && x.tribe === tribe;
-//     } else if (title && !tribe) {
-//       return x.title === title;
-//     } else if (!title && tribe) {
-//       return x.tribe === tribe;
-//     }
-//   });
+
+  //     if (title && tribe) {
+  //       return x.title === title && x.tribe === tribe;
+  //     } else if (title && !tribe) {
+  //       return x.title === title;
+  //     } else if (!title && tribe) {
+  //       return x.tribe === tribe;
+  //     }
+  //   });
 
   ctx.body = employees;
 }
@@ -153,7 +171,22 @@ function searchTribesByName(ctx) {
   ctx.body = result;
 }
 
+function employeesReport(ctx) {
+  const report = {};
+  for (employee of employeesModel.employees) {
+    if (employeesModel.employees.tribe in report) {
+      report[employee.tribe].push(employee);
+    } else {
+      report[employee.tribe] = [];
+      report[employee.tribe].push(employee);
+    }
+  }
+
+  ctx.body = report;
+}
+
 module.exports = {
+  employeesReport,
   filterEmployees,
   searchEmployeeByName,
   searchOfficesByName,

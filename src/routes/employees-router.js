@@ -10,6 +10,8 @@ router.post("/employees", employeesController.createEmployees);
 router.get("/api/employees/empName", employeesController.searchEmployeeByName);
 router.get("/api/employees/filter", employeesController.filterEmployees);
 
+router.get("/reports/employees", employeesController.employeesReport);
+
 router.get("/offices", employeesController.getAllOffices);
 router.get("/offices/:id", employeesController.getByIdOffices);
 router.delete("/offices/:id", employeesController.deleteByIdOffices);
