@@ -8,6 +8,7 @@ router.get("/employees/:id", employeesController.getByIdEmployees);
 router.delete("/employees/:id", employeesController.deleteByIdEmployees);
 router.post("/employees", employeesController.createEmployees);
 router.get("/api/employees/empName", employeesController.searchEmployeeByName);
+router.get("/api/employees/filter", employeesController.filterEmployees);
 
 router.get("/offices", employeesController.getAllOffices);
 router.get("/offices/:id", employeesController.getByIdOffices);
@@ -21,6 +22,5 @@ router.delete("/tribes/:id", employeesController.deleteByIdTribes);
 // router.post("/tribes", employeesController.createTribes);
 router.get("/api/tribes/tribeName", employeesController.searchTribesByName);
 
-// router.get("/report", employeesController.employeesGroupedByTribe);
 
 module.exports = router;

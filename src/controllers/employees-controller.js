@@ -15,6 +15,11 @@ function getAllTribes(ctx) {
 function getByIdEmployees(ctx) {
   const index = ctx.request.params.id;
 
+  // const employee = employeesModel.employees[id]
+  // if(!employees) {
+  //   ctx.status = 404
+  // }
+
   if (Number(index) > employeesModel.employees.length - 1) {
     ctx.status = 404;
     return;
@@ -70,7 +75,7 @@ function createEmployees(ctx) {
   const tribe_id = ctx.request.body.tribe_id;
   const office_id = ctx.request.body.office_id;
 
-  if (!name || name === "") {
+  if (!name || name === "" || !title || title === "" || !tribe_id || tribe_id === "") {
     ctx.status = 400;
     return;
   }
@@ -78,6 +83,8 @@ function createEmployees(ctx) {
   employeesModel.employees.push({ id, name, title, tribe_id, office_id });
   ctx.status = 201;
 }
+
+
 
 // function createOffices(ctx) {
 //   const text = ctx.request.body.text;
@@ -105,35 +112,49 @@ function createEmployees(ctx) {
 
 function searchEmployeeByName(ctx) {
   const name = ctx.request.query.name;
-  const result = employeesModel.employees.filter((x) => x.name.toLowerCase().includes(name.toLowerCase())
+  const result = employeesModel.employees.filter((x) =>
+    x.name.toLowerCase().includes(name.toLowerCase())
   );
   ctx.body = result;
 }
 
+function filterEmployees(ctx) {
+  const title = ctx.request.query.title;
+  const tribe = ctx.request.query.tribe;
+
+  const employees = employeesModel.employees.filter((x) => ( title ? x.title === title : true ) && ( tribe ? x.tribe === tribe : true )
+  );
+  
+//     if (title && tribe) {
+//       return x.title === title && x.tribe === tribe;
+//     } else if (title && !tribe) {
+//       return x.title === title;
+//     } else if (!title && tribe) {
+//       return x.tribe === tribe;
+//     }
+//   });
+
+  ctx.body = employees;
+}
+
 function searchOfficesByName(ctx) {
   const officeName = ctx.request.query.string;
-  const result = employeesModel.offices.filter((x) => x.name.toLowerCase().includes(officeName.toLowerCase())
+  const result = employeesModel.offices.filter((x) =>
+    x.name.toLowerCase().includes(officeName.toLowerCase())
   );
   ctx.body = result;
 }
 
 function searchTribesByName(ctx) {
   const tribeName = ctx.request.query.string;
-  const result = employeesModel.tribes.filter((x) => x.name.toLowerCase().includes(tribeName.toLowerCase())
+  const result = employeesModel.tribes.filter((x) =>
+    x.name.toLowerCase().includes(tribeName.toLowerCase())
   );
   ctx.body = result;
 }
 
-
-// function employeesGroupedByTribe(ctx) {
-//   const tribeName = ctx.request.query.string;
-//   const groupByTribe = 
-//   ctx.body = groupByTribe;
-// }
-
-
 module.exports = {
-  // employeesGroupedByTribe,
+  filterEmployees,
   searchEmployeeByName,
   searchOfficesByName,
   searchTribesByName,
